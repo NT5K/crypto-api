@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Add a new item to the database</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- reset.css -->
+    <link rel="stylesheet" type="text/css" href="../css/reset.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- style.css-->
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <!-- roboto font -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+</head>
+
+
+<body>
+
+    <div class="container-fluid text-center mb-5 pt-3">
+
+
+        <div class="p-4">
+            <h3>crypto-api.me</h3>
+        </div>
+
+        <!-- form -->
+        <div class="container-fluid text-center">
+
+            <form class="getData" action="/contract_abi" method="GET">
+                <div class="row">
+                    <div class="col-12">
+                        <h6>Start by typing in a token contract address:</h6>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">address</span>
+                            </div>
+                            <input type="text" id="addressfor" name="addressfor" class="form-control" placeholder="" value="">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-outline-secondary mb-5" id="submitAddress">Submit Address</button>
+                
+            
+            </form>
+
+            <form class="new-token" action="/posttodatabase" method="POST">
+
+                <!-- address -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">address</span>
+                            </div>
+                            <input type="text" id="address" name="address" class="form-control" placeholder="" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- name -->
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Name</span>
+                            </div>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="" disabled required>
+                        </div>
+                    </div>
+                
+
+                <!-- symbol -->
+                
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">symbol</span>
+                            </div>
+                            <input type="text" id="symbol" name="symbol" class="form-control" placeholder="" disabled required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- decimals -->
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">decimals</span>
+                            </div>
+                            <input type="number" id="decimals" name="decimals" class="form-control" placeholder="" disabled required>
+                        </div>
+                    </div>
+                
+
+                <!-- totalSupply -->
+                
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">totalSupply</span>
+                            </div>
+                            <input type="number" id="totalSupply" name="totalSupply" class="form-control" placeholder="" disabled required>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- subtract_supply_from_1 -->
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">remove_from_1</span>
+                            </div>
+            
+                                <input type="text" id="subtract_supply_from_1" name="subtract_supply_from_1" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">wallet_supply_1</span>
+                            </div>
+                
+                            <input type="number" id="wallet_supply_1" name="wallet_supply_1" class="form-control" placeholder="" value="0" disabled>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- subtract_supply_from_2 -->
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">remove_from_2</span>
+                            </div>
+            
+                                <input type="text" id="subtract_supply_from_2" name="subtract_supply_from_2" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">wallet_supply_2</span>
+                            </div>
+                
+                            <input type="number" id="wallet_supply_2" name="wallet_supply_2" class="form-control" placeholder="" value="0" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- subtract_supply_from_3 -->
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">remove_from_3</span>
+                            </div>
+            
+                                <input type="text" id="subtract_supply_from_3" name="subtract_supply_from_3" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">wallet_supply_3</span>
+                            </div>
+                
+                            <input type="number" id="wallet_supply_3" name="wallet_supply_3" class="form-control" placeholder="" value="0" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- subtract_supply_from_4 -->
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">remove_from_4</span>
+                            </div>
+            
+                                <input type="text" id="subtract_supply_from_4" name="subtract_supply_from_4" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">wallet_supply_4</span>
+                            </div>
+            
+                                <input type="number" id="wallet_supply_4" name="wallet_supply_4" class="form-control" placeholder="" value="0" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- estimated circulating supply -->
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">estimated ciruculating supply</span>
+                            </div>
+            
+                                <input type="text" id="estimated" name="estimated" class="form-control" placeholder="" disabled>
+                        </div>
+                    </div>
+                
+                    <div class="col-sm-12 col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">circ</span>
+                            </div>
+            
+                                <input type="number" id="estimated_circulating" name="estimated_circulating" class="form-control" placeholder="" value="0" disabled>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+                
+                
+
+                <!-- submit form button -->
+                <button type="submit" class="btn btn-outline-secondary" id="submitproduct" value="create item">Submit
+                    Product</button>
+                <p id="response_from_post"></p>
+             
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <!-- main javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/bignumber.js@9.0.0/bignumber.min.js"></script>
+    <script type="text/javascript" src="../javascript/main.js"></script>
+
+</body>
+
+</html>

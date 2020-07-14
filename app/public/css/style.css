@@ -1,0 +1,17 @@
+html {
+  overflow-y: scroll;
+}
+
+body {
+  max-width: 100%;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.container-fluid {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1000px;
+}
+
+
+
