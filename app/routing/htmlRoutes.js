@@ -7,6 +7,3 @@ module.exports = router;
 router.get('/', (__, res) => {
     res.sendFile(path.join(__dirname, '/../public/html/index.html'));
 });
-router.get('/2', (__, res) => {
-    res.sendFile(path.join(__dirname, '/../public/html/index2.html'));
-});
