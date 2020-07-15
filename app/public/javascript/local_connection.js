@@ -3,9 +3,6 @@ require('dotenv').config()
 
 let connection;
 
-// if (process.env.JAWSDB_URL) {
-//     connection = mysql.createConnection(process.env.JAWSDB_URL)
-// } else {
     connection = mysql.createConnection({
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
@@ -13,6 +10,5 @@ let connection;
         database: process.env.DB_DATABASE,
         port: process.env.DB_PORT
     });
-// };
 
 module.exports = connection;

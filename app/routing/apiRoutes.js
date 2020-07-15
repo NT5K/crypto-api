@@ -1,5 +1,5 @@
 
-const connection = require("./../public/javascript/connection");
+const connection = require("./../public/javascript/aws_connection");
 const express = require('express');
 const router = express.Router();
 const axios = require('axios')
@@ -7,7 +7,7 @@ const Web3 = require("web3")
 const BigNumber = require('bignumber.js');
 require('dotenv').config()
 
-const web3 = new Web3(new Web3.providers.HttpProvider("https://kovan.infura.io/v3/55ed83d01ec84809ba6e6e314da6c2ef"))
+const web3 = new Web3(new Web3.providers.HttpProvider("https://kovan.infura.io/v3/" + process.env.INFURA_KEY))
 
 module.exports = router;
 
@@ -200,7 +200,7 @@ router.post("/posttodatabase",(req, res) => {
     connection.query(checkAddress, address, (err, check) => {
         const tokenExistsCheck = JSON.parse(Object.values(check[0]))
         console.log('is it already in there? ', tokenExistsCheck)
-        if (tokenExistsCheck === 0) {
+        if (tokenExistsCheck == 0) {
            
                 const body = [name, symbol, address, decimals, one, two, three, four];
                 connection.query(query, body, (err, result) => {

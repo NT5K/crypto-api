@@ -1,6 +1,7 @@
 
 let Decimals = 0
 let account;
+
 // web3 provider with fallback for old version
 if (window.ethereum) {
     window.web3 = new Web3(window.ethereum)
@@ -38,8 +39,6 @@ web3.eth.getAccounts(function (err, accounts) {
     document.getElementById('my_wallet').innerHTML = account
 });
 
-
-
 window.ethereum.on('accountsChanged', function (user) {
     let select = window.web3.currentProvider.selectedAddress
     account = user
@@ -64,9 +63,8 @@ $(".new-token").on("submit", (event) => {
         supply4: $("#subtract_supply_from_4").val().trim()
     };
 
-    
-        const contractAddress = $("#address").val().trim()
-  
+    const contractAddress = $("#address").val().trim()
+
     $.ajax("/getcreator/" + contractAddress, {
         type: "GET",
         success: (response) => {
@@ -101,99 +99,53 @@ $(".getData").on('submit', (event) => {
     $.ajax("/getcreator/" + address, {
         type: "GET",
         success: (owner) => {
-
             $.ajax("/contract_abi/" + address, {
                 type: "GET",
                 success: (response) => {
-                    const { address, name, symbol, decimals, totalSupply} = response
+                    const { address, name, symbol, decimals, totalSupply } = response
                     Decimals = decimals
-                    
+                    console.log('creator account: ', owner.creator)
+                    console.log('active account: ', account)
                     document.getElementById("address").value = address
                     document.getElementById("name").value = name
                     document.getElementById("symbol").value = symbol
                     document.getElementById("decimals").value = decimals
-                    document.getElementById("owner").value = owner.creator
-                    document.getElementById("totalSupply").value = (BigNumber(totalSupply).dividedBy(JSON.parse("1e" + Decimals))).toFixed()
+                    if (owner.creator == account.toLowerCase()) {
+                        document.getElementById("owner").style.color = "green";
+                        document.getElementById("owner").value = owner.creator
+                    } else if (owner.creator != account.toLowerCase()) {
+                        document.getElementById("owner").style.color = "red";
+                        document.getElementById("owner").value = owner.creator
+                    }
 
+                    document.getElementById("totalSupply").value = (BigNumber(totalSupply).dividedBy(JSON.parse("1e" + Decimals))).toFixed()
                 }
             }).then(() => {
-                console.log('success')
+                console.log('successfully retrieved contract information from abi')
             });
-
         }
     })
 })
 
-$("#subtract_supply_from_1").on('input', (event) => {
-    event.preventDefault();
-    let wallet = $("#subtract_supply_from_1").val().trim()
-    let token_address = $("#addressfor").val().trim()
-    $.ajax('/balance_of_user/'+ wallet + "/" + token_address, {
+const getSupplyFrom = (walletId, balanceId) => {
+    // console.log('walletID: ',typeof(walletId), 'balanceId',typeof(balanceId))
+    let wallet = document.getElementById(walletId).value
+    let address = document.getElementById("addressfor").value
+
+    $.ajax('/balance_of_user/' + wallet + "/" + address, {
         type: "GET",
         success: (response) => {
-            const { balance} = response
+            const { balance } = response
             // console.log(balance)
-            document.getElementById("wallet_supply_1").value = (BigNumber(balance).dividedBy(JSON.parse("1e" + Decimals))).toFixed()
+            document.getElementById(balanceId).value = (BigNumber(balance).dividedBy(JSON.parse("1e" + Decimals))).toFixed()
         }
     }).then(() => {
-        console.log('success')
+        console.log('successfully received balance of wallet')
         calculateCirculatingSupply()
     });
-})
+} 
 
-$("#subtract_supply_from_2").on('input', (event) => {
-    event.preventDefault();
-    let wallet = $("#subtract_supply_from_2").val().trim()
-    let token_address = $("#addressfor").val().trim()
-    $.ajax('/balance_of_user/'+ wallet + "/" + token_address, {
-        type: "GET",
-        success: (response) => {
-            const { balance} = response
-            // console.log(balance)
-            document.getElementById("wallet_supply_2").value = (BigNumber(balance).dividedBy(JSON.parse("1e" + Decimals))).toFixed()
-        }
-    }).then(() => {
-        console.log('success')
-        calculateCirculatingSupply()
-    });
-})
-
-
-$("#subtract_supply_from_3").on('input', (event) => {
-    event.preventDefault();
-    let wallet = $("#subtract_supply_from_3").val().trim()
-    let token_address = $("#addressfor").val().trim()
-    $.ajax('/balance_of_user/'+ wallet + "/" + token_address, {
-        type: "GET",
-        success: (response) => {
-            const { balance} = response
-            // console.log(balance)
-            document.getElementById("wallet_supply_3").value = (BigNumber(balance).dividedBy(JSON.parse("1e" + Decimals))).toFixed()
-        }
-    }).then(() => {
-        console.log('success')
-        calculateCirculatingSupply()
-    });
-})
-
-$("#subtract_supply_from_4").on('input', (event) => {
-    event.preventDefault();
-    let wallet = $("#subtract_supply_from_4").val().trim()
-    let token_address = $("#addressfor").val().trim()
-    $.ajax('/balance_of_user/'+ wallet + "/" + token_address, {
-        type: "GET",
-        success: (response) => {
-            const { balance} = response
-            // console.log(balance)
-            document.getElementById("wallet_supply_4").value = (BigNumber(balance).dividedBy(JSON.parse("1e" + Decimals))).toFixed()
-        }
-    }).then(() => {
-        console.log('success')
-        calculateCirculatingSupply()
-    });
-})
-
-function calculateCirculatingSupply() {
+const calculateCirculatingSupply = () => {
     let totalSupply = $("#totalSupply").val()
     let supply1 = $("#wallet_supply_1").val()
     let supply2 = $("#wallet_supply_2").val()
@@ -201,7 +153,6 @@ function calculateCirculatingSupply() {
     let supply4 = $("#wallet_supply_4").val()
     document.getElementById("estimated_circulating").value = BigNumber(totalSupply).minus(supply1).minus(supply2).minus(supply3).minus(supply4)
     document.getElementById("estimated_removed").value = BigNumber(supply1).plus(supply2).plus(supply3).plus(supply4)
-    
 }
 
 
