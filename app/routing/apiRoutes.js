@@ -1,5 +1,5 @@
 
-const connection = require("./../public/javascript/local_connection");
+const connection = require("./../public/javascript/aws_connection");
 const express = require('express');
 const router = express.Router();
 const axios = require('axios')
