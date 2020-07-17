@@ -1,5 +1,5 @@
 
-const connection = require("./../public/javascript/aws_connection");
+const connection = require("./../public/javascript/local_connection");
 const express = require('express');
 const router = express.Router();
 const axios = require('axios')
@@ -124,7 +124,19 @@ router.get('/token/c/:contractAddress', (req, res) => {
                     .then(function (response) {
                         let abi = JSON.parse(response.data.result)
                         // console.log(abi)
+                        let array = []
+                        const emptyArray = []
                         const contract = new web3.eth.Contract(abi, address)
+                        for (let item of abi) {
+                        //     if (item.type === "constructor") console.log('constructors ',item.inputs)
+                            if (item.stateMutability === "view" && item.inputs.length === 0) {
+                                array.push(item.name)
+                                // console.log('functions ', item.name+'()')
+                            }
+                        //     // if (item.includes('()')) console.log(item.name)
+                        }
+                        console.log(array)
+                        // console.log(Object.keys(contract.methods))
                         contract.methods.totalSupply().call((__, totalSupply) => { 
                             contract.methods.balanceOf(removed_account_1).call((error, balance1) => {
                                 contract.methods.balanceOf(removed_account_2).call((error, balance2) => {
@@ -237,5 +249,47 @@ router.get("/getcreator/:address", (req, res) => {
             creator: response.data.result[0].from
         })
     }) 
+})
+
+router.get("/:address", (req, res) => {
+    const { address } = req.params
+    let array = []
+    let arrayWithNames = []
+    let arrayEval = []
+    let arrayFinal = {}
+    axios.get('http://api-kovan.etherscan.io/api?module=contract&action=getabi&address=' + address + '&apikey=' + process.env.ETHERSCAN_KEY)
+    .then(function (response) {
+        let abi = JSON.parse(response.data.result)  
+        const contract = new web3.eth.Contract(abi, address) 
+        for (let item of abi) { 
+            if (item.stateMutability === "view" && item.inputs.length === 0) { 
+                // push item.name to an array and push contract.method to another array
+                arrayWithNames.push(item.name) 
+                array.push("contract.methods."+ item.name + "().call((error, data) => {})") 
+            }
+        }
+        function setKeyValueLoop() {
+            for (let i = 0; i < arrayWithNames.length; i++) {
+                var keys = arrayWithNames
+                var values = arrayEval
+                var result = arrayFinal
+                // set new key value pair
+                keys.forEach((key, i) => result[key] = values[i]);
+            }
+            return res.send({
+                token: arrayFinal
+            })
+        }
+        async function getDataLoop() {
+            for (let k = 0; k <= array.length; k++) {
+                const data = await eval(array[k])
+                // push method eval to an array
+                arrayEval.push(data)
+            }
+            // console.log(arrayEval)
+            setKeyValueLoop()
+        }
+        getDataLoop()
+    })
 })
 
