@@ -106,7 +106,7 @@ router.get('/balance_of_user/:wallet/:token_address', (req, res) => {
 // return circulating supply for a token
 router.get('/token/c/:contractAddress', (req, res) => {
     const query = "SELECT * FROM tokens WHERE address = ?;";
-    const checkAddress = "SELECT EXISTS(SELECT * FROM tokens WHERE address = ? LIMIT 1)"
+    const checkAddress = "SELECT EXISTS(SELECT * FROM tokens WHERE address = ? LIMIT 1);"
     const { contractAddress } = req.params
     connection.query(checkAddress, contractAddress, (err, check) => {
         const tokenExistsCheck = JSON.parse(Object.values(check[0]))
