@@ -2,7 +2,7 @@
   "name": "crypto-api",
   "version": "1.0.0",
   "description": "crypto api generator / get your market cap on cmc and coingecko and more.",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
