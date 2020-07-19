@@ -104,7 +104,7 @@ router.get('/balance_of_user/:wallet/:token_address', (req, res) => {
 });
 
 // return circulating supply for a token
-router.get('/token/c/:contractAddress', (req, res) => {
+router.get('/circulating/:contractAddress', (req, res) => {
     const query = "SELECT * FROM tokens WHERE address = ?;";
     const checkAddress = "SELECT EXISTS(SELECT * FROM tokens WHERE address = ? LIMIT 1);"
     const { contractAddress } = req.params
@@ -251,14 +251,17 @@ router.get("/getcreator/:address", (req, res) => {
     }) 
 })
 
-router.get("/:address", (req, res) => {
-    const { address } = req.params
+router.get("/api/:token_address", (req, res) => {
+    const { token_address } = req.params
+    const address = token_address
+    // console.log('address from params: ', address)
     let array = []
     let arrayWithNames = []
     let arrayEval = []
     let arrayFinal = {}
-    axios.get('http://api-kovan.etherscan.io/api?module=contract&action=getabi&address=' + address + '&apikey=' + process.env.ETHERSCAN_KEY)
+    axios.get('http://api-kovan.etherscan.io/api?module=contract&action=getabi&address=' + address.toLowerCase() + '&apikey=' + process.env.ETHERSCAN_KEY)
     .then(function (response) {
+        // console.log("Unexpected token I: ", JSON.parse(response.data.result) )
         let abi = JSON.parse(response.data.result)  
         const contract = new web3.eth.Contract(abi, address) 
         for (let item of abi) { 
@@ -268,6 +271,7 @@ router.get("/:address", (req, res) => {
                 array.push("contract.methods."+ item.name + "().call((error, data) => {})") 
             }
         }
+        
         function setKeyValueLoop() {
             for (let i = 0; i < arrayWithNames.length; i++) {
                 var keys = arrayWithNames
@@ -276,6 +280,7 @@ router.get("/:address", (req, res) => {
                 // set new key value pair
                 keys.forEach((key, i) => result[key] = values[i]);
             }
+            console.log(arrayFinal)
             return res.send({
                 token: arrayFinal
             })
@@ -290,6 +295,9 @@ router.get("/:address", (req, res) => {
             setKeyValueLoop()
         }
         getDataLoop()
+    }).catch((error)=> {
+        console.log('getting a error')
+        console.log(error)
     })
 })
 
