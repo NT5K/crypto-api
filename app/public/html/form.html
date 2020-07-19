@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>crypto-api.info</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- reset.css -->
+    <link rel="stylesheet" type="text/css" href="../css/reset.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- style.css-->
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <!-- roboto font -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJ3077K5YX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-ZJ3077K5YX');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid mb-5">
+
+        <div class="text-center">
+            <p id="my_wallet" class="mb-1" style="font-size: 1rem;"></p>
+            <h3 class="mt-5 mb-4">crypto-api.info </h3>
+        </div>
+
+        <form class="getData" action="/contract_abi" method="GET">
+
+                <div class="row justify-content-center">
+                    <div class="col-xs-12 col-sm-8 align-self-center">
+                        <div class="form-group text-center">
+                            <label for="addressfor">Type in a token contract address</label>
+                            <input type="text" class="form-control form-control-sm text-center" id="addressfor"  placeholder="Enter token contract address">
+                            <!-- <small id="onSubmit" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-outline-secondary">View Contract Information</button>
+                        </div>
+                    </div>
+                </div>
+           
+        </form>
+        
+        <hr>
+        <p class="text-center">You must be the contract owner in order to submit a token to the database. If the contract owner displayed below is not the same as the account connected to metamask, you cannot suubmit the token to the database</p>
+        <form class="new-token" action="/posttodatabase" method="POST">
+
+            <div class="row">
+                <!-- Contract Address -->
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <!-- <label for="address">Contract Address</label> -->
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Address</span>
+                        </div>
+                        <input type="text" class="form-control form-control-sm" id="address" readonly> 
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                Creator
+                                <span class="ml-1" title="If green, you are the owner and can add contract to database">
+                                    &#9432;
+                                </span>
+                            </span>
+                        </div>
+                        <input type="text" class="form-control form-control-sm" id="owner" readonly> 
+                    </div>
+                </div>
+            </div>
+
+            <!-- Name -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Name</span>
+                        </div>
+                        <input type="text" class="form-control form-control-sm" id="name" readonly>
+                    </div>
+                    
+                </div>
+
+            <!-- Symbol -->
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Symbol</span>
+                        </div>
+                        <input type="text" class="form-control form-control-sm" id="symbol" readonly>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Decimals -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Decimals</span>
+                        </div>
+                        <input type="number" class="form-control form-control-sm" id="decimals" readonly>
+                    </div>
+                    
+                </div>
+
+            <!-- Total Supply -->
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Supply</span>
+                        </div>
+                        <input type="number" class="form-control form-control-sm" id="totalSupply" readonly>
+                    </div>
+                    
+                </div>
+            </div>
+            <hr>
+            <p class="text-center">Add up to four wallet addresses that you would like to be removed for circulating supply. If a field is left blank, an address that will never hold any supply will be added with a balance of zero tokens</p>
+
+            <!-- subtract_supply_from_1 -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Wallet 1</span>
+                        </div>
+                        <input 
+                            type="text" 
+                            oninput="getSupplyFrom('subtract_supply_from_1','wallet_supply_1')" 
+                            class="form-control form-control-sm" 
+                            id="subtract_supply_from_1"
+                        />
+                    </div>
+                </div>
+
+            <!-- wallet_supply_1 -->
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Balance</span>
+                        </div>
+                        <input type="number" class="form-control form-control-sm" id="wallet_supply_1" value="0" readonly>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- subtract_supply_from_2 -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Wallet 2</span>
+                        </div>
+                        <input 
+                            type="text" 
+                            oninput='getSupplyFrom("subtract_supply_from_2","wallet_supply_2")'
+                            class="form-control form-control-sm" 
+                            id="subtract_supply_from_2"
+                        />
+                    </div>
+                </div>
+
+            <!-- wallet_supply_2 -->
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Balance</span>
+                        </div>
+                        <input type="number" class="form-control form-control-sm" id="wallet_supply_2" value="0" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- subtract_supply_from_3 -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Wallet 3</span>
+                        </div>
+                        <input 
+                            type="text" 
+                            oninput='getSupplyFrom("subtract_supply_from_3","wallet_supply_3")'
+                            class="form-control form-control-sm" 
+                            id="subtract_supply_from_3" 
+                        />
+                    </div>
+                </div>
+
+                <!-- wallet_supply_3 -->
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Balance</span>
+                        </div>
+                        <input type="number" class="form-control form-control-sm" id="wallet_supply_3" value="0" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- subtract_supply_from_4 -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Wallet 4</span>
+                        </div>
+                        <input 
+                            type="text" 
+                            oninput='getSupplyFrom("subtract_supply_from_4","wallet_supply_4")'
+                            class="form-control form-control-sm" 
+                            id="subtract_supply_from_4" 
+                        />
+                    </div>
+                </div>
+
+            <!-- wallet_supply_4 -->
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Balance</span>
+                        </div>
+                        <input type="number" class="form-control form-control-sm" id="wallet_supply_4" value="0" readonly>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <!-- estimated -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Removed Supply</span>
+                        </div>
+                        <input type="number" class="form-control form-control-sm" id="estimated_removed" readonly>
+                    </div>
+                </div>
+
+            <!-- estimated_circulating -->
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Circulating Supply</span>
+                        </div>
+                        <input type="number" class="form-control form-control-sm" id="estimated_circulating" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- submit form button -->
+            <div class="row text-center">
+                <div class="col">
+                    <p id="response_from_post">&nbsp;</p>
+                    <button type="submit" class="btn btn-outline-secondary">Submit Token</button>
+                </div>
+            </div>
+
+        </form>
+        
+    </div>
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- web3.js -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <!-- bignumber.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bignumber.js@9.0.0/bignumber.min.js"></script>
+    <!-- main javascript -->
+    <script type="text/javascript" src="../javascript/main.js"></script>
+
+</body>
+
+</html>

@@ -1,5 +1,5 @@
 
-const connection = require("./../public/javascript/aws_connection");
+const connection = require("./../public/javascript/connection");
 const express = require('express');
 const router = express.Router();
 const axios = require('axios')
@@ -7,7 +7,7 @@ const Web3 = require("web3")
 const BigNumber = require('bignumber.js');
 require('dotenv').config()
 
-const web3 = new Web3(new Web3.providers.HttpProvider("https://kovan.infura.io/v3/" + process.env.INFURA_KEY))
+const web3 = new Web3(new Web3.providers.HttpProvider("https://infura.io/v3/" + process.env.INFURA_KEY))
 
 module.exports = router;
 
@@ -16,7 +16,7 @@ router.get('/contract_abi/:address', (req, res) => {
     const { address } = req.params
     // console.log(web3.utils.isAddress(address))
     if (web3.utils.isAddress(address)) {
-        axios.get('http://api-kovan.etherscan.io/api?module=contract&action=getabi&address=' + address + '&apikey=' + process.env.ETHERSCAN_KEY)
+        axios.get('http://api.etherscan.io/api?module=contract&action=getabi&address=' + address + '&apikey=' + process.env.ETHERSCAN_KEY)
         .then(function (response) {
             console.log(response.data.status)
             let abi = JSON.parse(response.data.result)
@@ -85,7 +85,7 @@ router.get('/balance_of_user/:wallet/:token_address', (req, res) => {
     // console.log('token_address = ',web3.utils.isAddress(token_address))
     // const contract = new web3.eth.Contract(abi, token_address)
     if (web3.utils.isAddress(wallet)) {
-        axios.get('http://api-kovan.etherscan.io/api?module=contract&action=getabi&address=' + token_address + '&apikey=' + process.env.ETHERSCAN_KEY)
+        axios.get('http://api.etherscan.io/api?module=contract&action=getabi&address=' + token_address + '&apikey=' + process.env.ETHERSCAN_KEY)
         .then(function (response) {
             let abi = JSON.parse(response.data.result)
             // console.log(abi)
@@ -120,7 +120,7 @@ router.get('/circulating/:contractAddress', (req, res) => {
                     console.log(err)
                     return res.status(500).end();
                 }
-                axios.get('http://api-kovan.etherscan.io/api?module=contract&action=getabi&address=' + address + '&apikey=' + process.env.ETHERSCAN_KEY)
+                axios.get('http://api.etherscan.io/api?module=contract&action=getabi&address=' + address + '&apikey=' + process.env.ETHERSCAN_KEY)
                     .then(function (response) {
                         let abi = JSON.parse(response.data.result)
                         // console.log(abi)
@@ -242,7 +242,7 @@ router.post("/posttodatabase",(req, res) => {
 
 router.get("/getcreator/:address", (req, res) => {
     const { address } = req.params
-    axios.get('https://api-kovan.etherscan.io/api?module=account&action=txlist&address=' + address + '&startblock=0&endblock=99999999&page=1&offset=10&sort=dec&apikey=' + process.env.ETHERSCAN_KEY)
+    axios.get('https://api.etherscan.io/api?module=account&action=txlist&address=' + address + '&startblock=0&endblock=99999999&page=1&offset=10&sort=dec&apikey=' + process.env.ETHERSCAN_KEY)
     .then((response) => {
         console.log(response.data.result[0].from)
         res.send({
@@ -259,7 +259,7 @@ router.get("/api/:token_address", (req, res) => {
     let arrayWithNames = []
     let arrayEval = []
     let arrayFinal = {}
-    axios.get('http://api-kovan.etherscan.io/api?module=contract&action=getabi&address=' + address.toLowerCase() + '&apikey=' + process.env.ETHERSCAN_KEY)
+    axios.get('http://api.etherscan.io/api?module=contract&action=getabi&address=' + address.toLowerCase() + '&apikey=' + process.env.ETHERSCAN_KEY)
     .then(function (response) {
         // console.log("Unexpected token I: ", JSON.parse(response.data.result) )
         let abi = JSON.parse(response.data.result)  

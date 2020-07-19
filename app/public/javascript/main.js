@@ -19,10 +19,11 @@ else if (window.web3) {
     // no need to ask for permission
 }
 else {
-    window.alert('In order to interact with the contract you must have an ethereum enabled browser!  Try MetaMask!')
+    window.alert('No ethereum client detected. Try MetaMask!')
 }
 console.log(window.web3.currentProvider)
 
+ethereum.autoRefreshOnNetworkChange = false;
 
 web3.eth.getAccounts(function (err, accounts) {
     if (err != null) {
@@ -36,13 +37,13 @@ web3.eth.getAccounts(function (err, accounts) {
     account = accounts[0];
     console.log('Account: ' + account);
     web3.eth.defaultAccount = account;
-    document.getElementById('my_wallet').innerHTML = account
+    document.getElementById('my_wallet').innerHTML = "Account: " +account
 });
 
 window.ethereum.on('accountsChanged', function (user) {
     let select = window.web3.currentProvider.selectedAddress
     account = user
-    document.getElementById('my_wallet').innerHTML = "Please refresh page"
+    document.getElementById('my_wallet').innerHTML = "<p style='color:red;'>Metamask account has changed. Please refresh the page</p>"
     // selectedAddress = ethereum.selectedAddress
     console.log(account)
 })
