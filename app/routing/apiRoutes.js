@@ -7,7 +7,7 @@ const Web3 = require("web3")
 const BigNumber = require('bignumber.js');
 require('dotenv').config()
 
-const web3 = new Web3(new Web3.providers.HttpProvider("https://infura.io/v3/" + process.env.INFURA_KEY))
+const web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/" + process.env.INFURA_KEY))
 
 module.exports = router;
 
