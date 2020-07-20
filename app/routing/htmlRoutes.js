@@ -10,3 +10,6 @@ router.get('/', (__, res) => {
 router.get('/form', (__, res) => {
     res.sendFile(path.join(__dirname, '/../public/html/form.html'));
 });
+router.get('/form2', (__, res) => {
+    res.sendFile(path.join(__dirname, '/../public/html/form2.html'));
+});

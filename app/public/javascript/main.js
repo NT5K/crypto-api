@@ -2,51 +2,35 @@
 let Decimals = 0
 let account;
 
-// web3 provider with fallback for old version
-if (window.ethereum) {
-    window.web3 = new Web3(window.ethereum)
-    try {
-        // ask user for permission
-        ethereum.enable()
-        // user approved permission
-    } catch (error) {
-        // user rejected permission
-        console.log('user rejected permission')
-    }
-}
-else if (window.web3) {
-    window.web3 = new Web3(window.web3.currentProvider)
-    // no need to ask for permission
-}
-else {
-    window.alert('No ethereum client detected. Try MetaMask!')
-}
-console.log(window.web3.currentProvider)
+// $(".new-name").on("submit", (event) => {
+//     event.preventDefault();
+//     var newName = {
+//         address: $("#wallet-address").val().trim(),
+//         name: $("#wallet-name").val().trim()
+//     };
+//     console.log(newName)
+//     $.ajax("/add", {
+//         type: "POST",
+//         data: newName,
+//         success: (response) => {
+//             const { message } = response
+//             // if(response.success) {
+//             console.log(message)
+//             document.getElementById("response_from_post_name").innerHTML = message
+//             // }
+//         }
+//     })
+// })
 
-ethereum.autoRefreshOnNetworkChange = false;
-
-web3.eth.getAccounts(function (err, accounts) {
-    if (err != null) {
-        alert("Error retrieving accounts.");
-        return;
+$("input#query-name").on({
+    keydown: function (e) {
+        if (e.which === 32)
+            return false;
+    },
+    change: function () {
+        this.value = this.value.replace(/\s/g, "");
     }
-    if (accounts.length == 0) {
-        alert("No account found! Make sure the Ethereum client is configured properly.");
-        return;
-    }
-    account = accounts[0];
-    console.log('Account: ' + account);
-    web3.eth.defaultAccount = account;
-    document.getElementById('my_wallet').innerHTML = "Account: " +account
 });
-
-window.ethereum.on('accountsChanged', function (user) {
-    let select = window.web3.currentProvider.selectedAddress
-    account = user
-    document.getElementById('my_wallet').innerHTML = "<p style='color:red;'>Metamask account has changed. Please refresh the page</p>"
-    // selectedAddress = ethereum.selectedAddress
-    console.log(account)
-})
 
 $(".new-token").on("submit", (event) => {
     // preventDefault on a submit event.
@@ -61,72 +45,42 @@ $(".new-token").on("submit", (event) => {
         supply1: $("#subtract_supply_from_1").val().trim(),
         supply2: $("#subtract_supply_from_2").val().trim(),
         supply3: $("#subtract_supply_from_3").val().trim(),
-        supply4: $("#subtract_supply_from_4").val().trim()
+        supply4: $("#subtract_supply_from_4").val().trim(),
+        getcall: $("#query-name").val().trim(),
     };
-
-    const contractAddress = $("#address").val().trim()
-
-    $.ajax("/getcreator/" + contractAddress, {
-        type: "GET",
+    $.ajax("/posttodatabase", {
+        type: "POST",
+        data: newToken,
         success: (response) => {
-            const { creator } = response
-            // console.log('type of creator ',typeof(creator), "creator address ", creator)
-            // console.log('type of account ',typeof(account), 'current account address', account.toLowerCase())
-            if (creator === account.toLowerCase()) {
-                $.ajax("/posttodatabase", {
-                    type: "POST",
-                    data: newToken,
-                    success: (response) => {
-                        const { message } = response
-                        // if(response.success) {
-                        console.log(message)
-                        document.getElementById("response_from_post").innerHTML = message
-                        // }
-                    }
-                })
-            } else {
-                // console.log("not the owner of contract")
-                document.getElementById("response_from_post").innerHTML = "not the owner of this contract"
-            }
+            const { message } = response
+            // if(response.success) {
+            console.log(message)
+            document.getElementById("response_from_post").innerHTML = message
         }
     })
-});
-
+})
 
 $(".getData").on('submit', (event) => {
     event.preventDefault();
     let address = $("#addressfor").val().trim()
 
-    $.ajax("/getcreator/" + address, {
+    $.ajax("/contract_abi/" + address, {
         type: "GET",
-        success: (owner) => {
-            $.ajax("/contract_abi/" + address, {
-                type: "GET",
-                success: (response) => {
-                    const { address, name, symbol, decimals, totalSupply } = response
-                    Decimals = decimals
-                    console.log('creator account: ', owner.creator)
-                    console.log('active account: ', account)
-                    document.getElementById("address").value = address
-                    document.getElementById("name").value = name
-                    document.getElementById("symbol").value = symbol
-                    document.getElementById("decimals").value = decimals
-                    if (owner.creator == account.toLowerCase()) {
-                        document.getElementById("owner").style.color = "green";
-                        document.getElementById("owner").value = owner.creator
-                    } else if (owner.creator != account.toLowerCase()) {
-                        document.getElementById("owner").style.color = "red";
-                        document.getElementById("owner").value = owner.creator
-                    }
-
-                    document.getElementById("totalSupply").value = (BigNumber(totalSupply).dividedBy(JSON.parse("1e" + Decimals))).toFixed()
-                }
-            }).then(() => {
-                console.log('successfully retrieved contract information from abi')
-            });
+        success: (response) => {
+            const { address, name, symbol, decimals, totalSupply } = response
+            Decimals = decimals
+            // console.log('creator account: ', owner.creator)
+            // console.log('active account: ', account)
+            document.getElementById("address").value = address
+            document.getElementById("name").value = name
+            document.getElementById("symbol").value = symbol
+            document.getElementById("decimals").value = decimals
+            document.getElementById("totalSupply").value = (BigNumber(totalSupply).dividedBy(JSON.parse("1e" + Decimals))).toFixed()
         }
+    }).then(() => {
+        console.log('successfully retrieved contract information from abi')
+    });
     })
-})
 
 const getSupplyFrom = (walletId, balanceId) => {
     // console.log('walletID: ',typeof(walletId), 'balanceId',typeof(balanceId))
