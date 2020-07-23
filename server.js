@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const htmlRoutes = require('./app/routing/htmlRoutes');
 const apiRoutes = require('./app/routing/apiRoutes');
+const axios = require('axios')
 
 // port for heroku and default port
 const port = process.env.PORT || 5000; 
@@ -26,3 +27,22 @@ require('./app/routing/apiRoutes.js');
 
 // listener for console
 app.listen(port, () => console.log(`listening on port ${port}!`));
+
+//keep database alive
+const keepAlive = async () => {
+    try {
+        const test = await axios.get('https://www.crypto-api.info/ping')
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+function refresh() {
+    // keep server alive by querying database every ten minutes
+    setTimeout(function () {
+        console.log('ping')
+        keepAlive()
+        refresh()
+    }, 600000);
+}
+refresh()

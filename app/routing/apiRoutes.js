@@ -66,16 +66,15 @@ router.get('/contract_abi/:address', (req, res) => {
 })
 
 // get totalSupply of a contract **NOT USED**
-// router.get('/get_token_data/:address', (req, res) => {
-
-//     const { abi, address } = req.params
-//     const contract = new web3.eth.Contract(abi, address)
-//     contract.methods.totalSupply().call((__, totalSupply) => {
-//         res.send({
-//             totalSupply
-//         })
-//     })
-// });
+router.get('/ping', (req, res) => {
+    console.log("test")
+    const query = "SELECT * FROM tokens WHERE getcall = hex2t;";
+    connection.query(query, (err, load) => {
+        res.send({
+            message: "refresh"
+        })
+    })
+});
 
 // return token balance of a user for a contract
 router.get('/balance_of_user/:wallet/:token_address', (req, res) => {
