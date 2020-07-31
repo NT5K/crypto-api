@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const htmlRoutes = require('./app/routing/htmlRoutes');
 const apiRoutes = require('./app/routing/apiRoutes');
+const customApis = require('./app/routing/customApis');
 const axios = require('axios')
 
 // port for heroku and default port
@@ -20,10 +21,12 @@ app.use(express.json({ type: 'application/*+json' }));
 //routes
 app.use(htmlRoutes);
 app.use(apiRoutes);
+app.use(customApis);
 
 // use html and api files instead of putting them here
 require('./app/routing/htmlRoutes.js');
 require('./app/routing/apiRoutes.js');
+require('./app/routing/customApis.js');
 
 // listener for console
 app.listen(port, () => console.log(`listening on port ${port}!`));
