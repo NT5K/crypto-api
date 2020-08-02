@@ -24,7 +24,7 @@ const eth = new Eth(new Eth.HttpProvider('https://mainnet.infura.io/v3/1209a87da
 
 module.exports = router;
 
-router.get('/api/bsov', (__, res) => {
+router.get('/token/api/bsov', (__, res) => {
     _.name().call((__, name) => {
         _.totalSupply().call((__, totalSupply) => {
             _.symbol().call((__, symbol) => {
