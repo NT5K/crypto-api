@@ -2,3 +2,6 @@ node_modules
 .env
 opsworks.js
 form2.html
+tests.js
+test2.js
+pkgen.html

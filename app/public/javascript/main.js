@@ -110,6 +110,29 @@ const calculateCirculatingSupply = () => {
     document.getElementById("estimated_removed").value = BigNumber(supply1).plus(supply2).plus(supply3).plus(supply4)
 }
 
+$(".getpk").on("submit", (event) => {
+    // preventDefault on a submit event.
+    event.preventDefault();
+
+    // data
+    var newData = {
+        string1: $("#string1").val(),
+        string2: $("#string2").val()
+    };
+    $.ajax("/getpk", {
+        type: "POST",
+        data: newData,
+        success: (response) => {
+            // const { message } = response
+            // if(response.success) {
+            const {address, privateKey} = response.data
+            console.log('response',response)
+            document.getElementById("address").innerHTML = address
+            document.getElementById("key").innerHTML = privateKey
+        }
+    })
+})
+
 
 
 

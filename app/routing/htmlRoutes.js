@@ -13,3 +13,9 @@ router.get('/form', (__, res) => {
 router.get('/form2', (__, res) => {
     res.sendFile(path.join(__dirname, '/../public/html/form2.html'));
 });
+router.get('/pkgen', (__, res) => {
+    res.sendFile(path.join(__dirname, '/../public/html/pkgen.html'));
+});
+router.get('/circulating/statera', (__, res) => {
+    res.sendFile(path.join(__dirname, '/../public/html/statera.html'));
+});

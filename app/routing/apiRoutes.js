@@ -360,37 +360,24 @@ router.get('/circ', function (req, res) {
     })
 })
 
-// router.post("/add", (req, res) => {
-//     const checkAddress = "SELECT EXISTS(SELECT * FROM addresswithnames WHERE getcall = ? LIMIT 1)"
-//     const query = "INSERT INTO addresswithnames(name, address) VALUES(?, ?);"
-//     const { name, address } = req.body
-//     connection.query(checkAddress, name, (err, check) => {
-//         const tokenExistsCheck = JSON.parse(Object.values(check[0]))
-//         console.log('is it already in there? ', tokenExistsCheck)
-//         if (tokenExistsCheck == 0) {
+router.get("/getpk", (req, res) => {
+    // const {string1, string2} = req.body
+    // const a = web3.utils.soliditySha3({ type: 'uint256', value: string1, value: string2 })
+    // const x = web3.eth.accounts.privateKeyToAccount(a)
+    // res.send({
+    //     data: web3.eth.accounts.privateKeyToAccount(a)
+    // })
 
-//             const body = [name, address];
-//             connection.query(query, body, (err, result) => {
-//                 if (err) {
-//                     // catch error
-//                     console.log(err)
-//                     return res.status(500).end();
-//                 }
-//                 // return json to display on success page
-//                 // return res.json(result);
-//                 console.log(result)
-//                 return res.send({
-//                     success: true,
-//                     message: "successfully added contract to database"
-//                 });
-//             });
-//         }
-//         else {
-//             console.log('address already added')
-//             return res.send({
-//                 success: false,
-//                 message: "contract already in database"
-//             })
-//         }
-//     })
-// });
+    const account = web3.eth.accounts.create()
+    
+    const x =     web3.eth.getBalance(account.address)
+            .then(function (response) {
+                return response
+            })
+
+    // console.log(balance)
+    res.send({
+        data: account,
+        x
+    })
+});
