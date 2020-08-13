@@ -8,15 +8,6 @@
 <body>
     <p id="supply"></p>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<script>
-    let URL = 'https://www.crypto-api.info/circulating/sta';
-        let frozen = $.ajax({
-            url: URL,
-            method: "GET"
-        }).then(function (response) {
-            console.log("supply", response.circulatingSupply)
-            return $("#supply").html(response.circulatingSupply)
-        })  
-</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.11/web3.min.js"></script>
+<script type="text/javascript" src="../javascript/statera.js"></script>
 </html>
