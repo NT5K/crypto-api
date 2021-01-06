@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/NT5K/crypto-api#readme",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "big-number": "^2.0.0",
     "dotenv": "^8.2.0",
     "ethjs": "^0.4.0",
